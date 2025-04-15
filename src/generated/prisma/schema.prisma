@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model caracteristicas_adicionales {
+  id                              Int                               @id @default(autoincrement())
+  nombre                          String                            @unique @db.VarChar(255)
+  caracteristicasadicionalescarro caracteristicasadicionalescarro[]
+}
+
+model caracteristicasadicionalescarro {
+  id                             Int                          @id @default(autoincrement())
+  id_carro                       Int?
+  id_caracteristicas_adicionales Int?
+  caracteristicas_adicionales    caracteristicas_adicionales? @relation(fields: [id_caracteristicas_adicionales], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "caracteristicasadicionalescar_id_caracteristicas_adicional_fkey")
+  carro                          carro?                       @relation(fields: [id_carro], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model carro {
+  id                              Int                               @id @default(autoincrement())
+  vim                             String                            @unique @db.VarChar(255)
+  anio                            Int?
+  marca                           String?                           @db.VarChar(255)
+  modelo                          String?                           @db.VarChar(255)
+  placa                           String                            @unique @db.VarChar(255)
+  id_direccion                    Int?
+  asientos                        Int?
+  puertas                         Int?
+  soat                            Boolean?                          @default(true)
+  precio_por_dia                  Decimal?                          @db.Decimal(10, 2)
+  num_mantenimientos              Int?                              @default(0)
+  transmision                     String?                           @db.VarChar(50)
+  estado                          String?                           @db.VarChar(50)
+  id_usuario_rol                  Int?
+  caracteristicasadicionalescarro caracteristicasadicionalescarro[]
+  direccion                       direccion?                        @relation(fields: [id_direccion], references: [id], onUpdate: NoAction)
+  usuario_rol                     usuario_rol?                      @relation(fields: [id_usuario_rol], references: [id], onUpdate: NoAction)
+  combustiblecarro                combustiblecarro[]
+  imagen                          imagen[]
+}
+
+model ciudad {
+  id        Int         @id @default(autoincrement())
+  nombre    String      @db.VarChar(255)
+  id_pais   Int?
+  pais      pais?       @relation(fields: [id_pais], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  provincia provincia[]
+  usuario   usuario[]
+}
+
+model combustiblecarro {
+  id                  Int              @id @default(autoincrement())
+  id_tipo_combustible Int?
+  id_carro            Int?
+  carro               carro?           @relation(fields: [id_carro], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tipocombustible     tipocombustible? @relation(fields: [id_tipo_combustible], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model direccion {
+  id           Int         @id @default(autoincrement())
+  id_provincia Int?
+  calle        String?     @db.VarChar(255)
+  zona         String?     @db.VarChar(255)
+  num_casa     String?     @db.VarChar(255)
+  carro        carro[]
+  provincia    provincia?  @relation(fields: [id_provincia], references: [id], onUpdate: NoAction)
+  ubicacion    ubicacion[]
+}
+
+model imagen {
+  id       Int    @id @default(autoincrement())
+  data     String @db.VarChar(255)
+  id_carro Int?
+  carro    carro? @relation(fields: [id_carro], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model pais {
+  id     Int      @id @default(autoincrement())
+  nombre String   @unique @db.VarChar(255)
+  ciudad ciudad[]
+}
+
+model provincia {
+  id        Int         @id @default(autoincrement())
+  nombre    String      @db.VarChar(255)
+  id_ciudad Int?
+  direccion direccion[]
+  ciudad    ciudad?     @relation(fields: [id_ciudad], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model rol {
+  id          Int           @id @default(autoincrement())
+  rol         String        @db.VarChar(255)
+  usuario_rol usuario_rol[]
+}
+
+model test {
+  id_test     Int     @id
+  namet       String? @db.VarChar(100)
+  descripcion String?
+}
+
+model tipocombustible {
+  id                  Int                @id @default(autoincrement())
+  tipo_de_combustible String             @unique @db.VarChar(255)
+  combustiblecarro    combustiblecarro[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model ubicacion {
+  id              Int                  @id @default(autoincrement())
+  id_direccion    Int?
+  coordenadas     Unsupported("point")
+  radio_cobertura Int?
+  direccion       direccion?           @relation(fields: [id_direccion], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model usuario {
+  id               Int           @id @default(autoincrement())
+  nombre           String        @db.VarChar(255)
+  fecha_nacimiento DateTime?     @db.Date
+  genero           String?       @db.VarChar(50)
+  id_ciudad        Int?
+  contrasena       String        @db.VarChar(255)
+  google_id        String?       @unique @db.VarChar(255)
+  foto             String?       @db.VarChar(255)
+  telefono         String?       @unique @db.VarChar(50)
+  ciudad           ciudad?       @relation(fields: [id_ciudad], references: [id], onUpdate: NoAction)
+  usuario_rol      usuario_rol[]
+}
+
+model usuario_rol {
+  id         Int      @id @default(autoincrement())
+  id_rol     Int?
+  id_usuario Int?
+  carro      carro[]
+  rol        rol?     @relation(fields: [id_rol], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  usuario    usuario? @relation(fields: [id_usuario], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
