@@ -96,14 +96,8 @@ model provincia {
 
 model rol {
   id          Int           @id @default(autoincrement())
-  rol         String        @db.VarChar(255)
+  rol         String        @unique @db.VarChar(255)
   usuario_rol usuario_rol[]
-}
-
-model test {
-  id_test     Int     @id
-  namet       String? @db.VarChar(100)
-  descripcion String?
 }
 
 model tipocombustible {
