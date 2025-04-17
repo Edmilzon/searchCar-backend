@@ -9,14 +9,29 @@ const carService = {
         select: {
           marca:true,
           modelo:true,
-          placa:true, 
+          placa:true,
+          anio:true,
+          asientos:true,
+          puertas:true,
+          soat:true, 
           precio_por_dia:true,
           direccion: {
-            select: {
-              calle: true,
-              zona: true,
-            }
-          },
+            select:{
+                calle:true,
+                zona:true,
+                num_casa:true,
+                provincia:{
+                    select:{
+                        nombre:true,
+                        ciudad:{
+                            select:{
+                                nombre:true,
+                            }
+                        }
+                    },
+                },
+            },
+        },
           combustiblecarro:{
             select:{
               tipocombustible:{
