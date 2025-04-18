@@ -38,6 +38,7 @@ model carro {
   transmision                     String?                           @db.VarChar(50)
   estado                          String?                           @db.VarChar(50)
   id_usuario_rol                  Int?
+  descripcion                     String?                           @db.VarChar(255)
   caracteristicasadicionalescarro caracteristicasadicionalescarro[]
   direccion                       direccion?                        @relation(fields: [id_direccion], references: [id], onUpdate: NoAction)
   usuario_rol                     usuario_rol?                      @relation(fields: [id_usuario_rol], references: [id], onUpdate: NoAction)
