@@ -29,7 +29,20 @@ const findAll = async () => {
                 }
             }
         },
-        direccion: true,
+        direccion: {
+          select:{
+              calle:true,
+              provincia:{
+                  select:{
+                      ciudad:{
+                          select:{
+                              nombre:true,
+                          }
+                      }
+                  },
+              },
+          },
+        },
         imagen: {
             take: 1,
             orderBy: {
@@ -40,7 +53,16 @@ const findAll = async () => {
                 data: true,
                 id_carro: true
             }
-        }
+        },
+        caracteristicasadicionalescarro: {
+          select: {
+            caracteristicas_adicionales: {
+              select: {
+                nombre: true
+              },
+            },
+          },
+        },
     }
     });
   } catch (error) {
