@@ -15,8 +15,6 @@ const carService = {
           puertas:true,
           soat:true, 
           precio_por_dia:true,
-          transmision:true,
-          descripcion:true,
           direccion: {
             select:{
                 calle:true,
@@ -34,6 +32,15 @@ const carService = {
                 },
             },
         },
+        usuario_rol:{
+          select:{
+              usuario:{
+                  select:{
+                     nombre:true,
+                  }
+              }
+          }
+        },
           combustiblecarro:{
             select:{
               tipocombustible:{
@@ -44,6 +51,15 @@ const carService = {
             },
           },
           imagen:true,
+          caracteristicasadicionalescarro:{
+            select:{
+              caracteristicas_adicionales:{
+                select:{
+                  nombre:true,
+                }
+              },
+            },
+          },
         }
       });
     }catch (error) {
