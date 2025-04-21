@@ -15,6 +15,7 @@ const carService = {
           puertas:true,
           soat:true, 
           precio_por_dia:true,
+          descripcion: true,
           direccion: {
             select:{
                 calle:true,
