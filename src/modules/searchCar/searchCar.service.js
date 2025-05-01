@@ -9,32 +9,28 @@ const findAll = async () => {
         marca: true,
         asientos:true,
         puertas:true,
-        transmision:true,
+        transmicion:true,
         precio_por_dia: true,
-        combustiblecarro:{
+        CombustibleCarro:{
             select:{
-            tipocombustible:{
+              TipoCombustible:{
               select:{
-                tipo_de_combustible:true,
+                tipoDeCombustible:true,
               }
             },
           },},
         estado:true,
-        usuario_rol:{
-            select:{
-                usuario:{
-                    select:{
-                       nombre:true,
-                    }
-                }
-            }
+        Usuario:{
+          select:{
+            nombre:true,
+          }
         },
-        direccion: {
+        Direccion: {
           select:{
               calle:true,
-              provincia:{
+              Provincia:{
                   select:{
-                      ciudad:{
+                    Ciudad:{
                           select:{
                               nombre:true,
                           }
@@ -43,7 +39,7 @@ const findAll = async () => {
               },
           },
         },
-        imagen: {
+        Imagen : {
             take: 1,
             orderBy: {
               id: 'asc'
@@ -54,9 +50,9 @@ const findAll = async () => {
                 id_carro: true
             }
         },
-        caracteristicasadicionalescarro: {
+        caracteristicasAdicionalesCarro: {
           select: {
-            caracteristicas_adicionales: {
+            CarasteristicasAdicionales: {
               select: {
                 nombre: true
               },
