@@ -4,28 +4,28 @@ const carService = {
   async findById(id){
     try{
       console.log('Id recibido desde constroller',id);
-      return await prisma.carro.findUnique({
+      return await prisma.Carro.findUnique({
         where: { id },
         select: {
           marca:true,
           modelo:true,
           placa:true,
-          anio:true,
+          a_o:true,
           asientos:true,
           puertas:true,
-          soat:true, 
+          soat:true,
           precio_por_dia:true,
           descripcion: true,
-          transmision:true,
-          direccion: {
+          transmicion:true,
+          Direccion: {
             select:{
                 calle:true,
                 zona:true,
                 num_casa:true,
-                provincia:{
+                Provincia:{
                     select:{
                         nombre:true,
-                        ciudad:{
+                        Ciudad:{
                             select:{
                                 nombre:true,
                             }
@@ -34,28 +34,24 @@ const carService = {
                 },
             },
         },
-        usuario_rol:{
+        Usuario:{
           select:{
-              usuario:{
-                  select:{
-                     nombre:true,
-                  }
-              }
+            nombre:true,
           }
         },
-          combustiblecarro:{
+          CombustibleCarro:{
             select:{
-              tipocombustible:{
+              TipoCombustible:{
                 select:{
-                  tipo_de_combustible:true,
+                  tipoDeCombustible:true,
                 }
               },
             },
           },
-          imagen:true,
-          caracteristicasadicionalescarro:{
+          Imagen:true,
+          caracteristicasAdicionalesCarro:{
             select:{
-              caracteristicas_adicionales:{
+              CarasteristicasAdicionales :{
                 select:{
                   nombre:true,
                 }
