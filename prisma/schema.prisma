@@ -89,7 +89,7 @@ model Descuento {
   id_descuentoTipo Int?
   montoDescontado  Float?
   tipodeDescuento  tipodeDescuento? @relation(fields: [id_descuentoTipo], references: [id])
-  Reserva          Reserva[]
+  Reserva          Reserva[]        @relation("DescuentoToReserva")
 }
 
 model Direccion {
@@ -171,7 +171,7 @@ model Reserva {
   Garantia               Garantia[]
   Carro                  Carro       @relation(fields: [id_carro], references: [id])
   Usuario                Usuario     @relation(fields: [id_usuario], references: [id])
-  Descuento              Descuento[]
+  Descuento              Descuento[] @relation("DescuentoToReserva")
 }
 
 model Rol {
