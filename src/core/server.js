@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 
-//RUTAS DEFINIDAS   
+//RUTAS DEFINIDAS
 
 app.use('/detailCar', detailCarModule.controller);
 app.use('/filterCar', filterCarModule.controller);

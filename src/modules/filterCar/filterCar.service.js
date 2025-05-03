@@ -4,7 +4,7 @@ const ordenarTodo=async(query)=>{
     const {ordenar}=query;
 
     let ordenamiento=undefined;
-    
+
     if(ordenar==='precio_asc'){
         ordenamiento={precio_por_dia: 'asc'};
     }else if(ordenar==='precio_desc'){
@@ -27,18 +27,18 @@ const ordenarTodo=async(query)=>{
             combustiblecarro:{
                 select:{
                 tipocombustible:{
-                  select:{
-                    tipo_de_combustible:true,
-                  }
+                    select:{
+                        tipo_de_combustible:true,
+                    }
                 },
-              },
+            },
             },
             estado:true,
             usuario_rol:{
                 select:{
                     usuario:{
                         select:{
-                           nombre:true,
+                            nombre:true,
                         }
                     },
                 },
@@ -63,7 +63,7 @@ const ordenarTodo=async(query)=>{
             imagen: {
                 take: 1,
                 orderBy: {
-                  id: 'asc'
+                    id: 'asc'
                 },
                 select: {
                     id: true,
