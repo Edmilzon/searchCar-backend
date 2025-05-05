@@ -17,6 +17,8 @@ const carService = {
           precio_por_dia:true,
           descripcion: true,
           transmicion:true,
+          disponible_hasta:true,
+          disponible_desde:true,
           Direccion: {
             select:{
                 calle:true,
