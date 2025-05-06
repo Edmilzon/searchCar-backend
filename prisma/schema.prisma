@@ -55,10 +55,12 @@ model Carro {
   fecha_ingreso                   DateTime?                         @default(now())
   disponible_desde                DateTime?
   disponible_hasta                DateTime?
+  id_condiciones_uso              Int?                              @unique(map: "uq_carro_condiciones_uso")
   Calificacion                    Calificacion[]
   Direccion                       Direccion                         @relation(fields: [id_direccion], references: [id])
   tipodeDescuento                 tipodeDescuento?                  @relation(fields: [id_tipodeDescuento], references: [id])
   Usuario                         Usuario                           @relation(fields: [id_usuario_rol], references: [id])
+  condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id], onUpdate: NoAction, map: "fk_carro_condiciones_uso")
   CombustibleCarro                CombustibleCarro[]
   Favorito                        Favorito[]
   Imagen                          Imagen[]
@@ -91,7 +93,7 @@ model Descuento {
   id_descuentoTipo Int?
   montoDescontado  Float?
   tipodeDescuento  tipodeDescuento? @relation(fields: [id_descuentoTipo], references: [id])
-  Reserva          Reserva[]
+  Reserva          Reserva[]        @relation("DescuentoToReserva")
 }
 
 model Direccion {
@@ -152,6 +154,17 @@ model Pais {
   Ciudad Ciudad[]
 }
 
+model PasswordRecoveryCode {
+  id         Int      @id @default(autoincrement())
+  id_usuario Int
+  correo     String
+  codigo     String
+  created_at DateTime @default(now())
+  expires_at DateTime
+  used       Boolean  @default(false)
+  Usuario    Usuario  @relation(fields: [id_usuario], references: [id])
+}
+
 model Provincia {
   id        Int         @id @default(autoincrement())
   nombre    String
@@ -177,7 +190,7 @@ model Reserva {
   Garantia               Garantia[]
   Carro                  Carro       @relation(fields: [id_carro], references: [id])
   Usuario                Usuario     @relation(fields: [id_usuario], references: [id])
-  Descuento              Descuento[]
+  Descuento              Descuento[] @relation("DescuentoToReserva")
 }
 
 model Rol {
@@ -191,6 +204,7 @@ model Seguro {
   empresa     String
   nombre      String
   tipoSeguro  String
+  valides     String?       @db.VarChar(255)
   SeguroCarro SeguroCarro[]
 }
 
@@ -200,6 +214,7 @@ model SeguroCarro {
   fechaFin    DateTime
   id_carro    Int
   id_seguro   Int
+  empresa     String?  @db.VarChar(255)
   Carro       Carro    @relation(fields: [id_carro], references: [id])
   Seguro      Seguro   @relation(fields: [id_seguro], references: [id])
 }
@@ -220,24 +235,25 @@ model Ubicacion {
 }
 
 model Usuario {
-  id               Int            @id @default(autoincrement())
-  nombre           String
-  fecha_nacimiento DateTime?
-  id_ciudad        Int?
-  contrase_a       String?        @map("contraseña")
-  telefono         String?
-  foto             String?
-  google_id        String?
-  correo           String         @unique
-  genero           Genero?
-  Busqueda         Busqueda[]
-  Calificacion     Calificacion[]
-  Carro            Carro[]
-  Favorito         Favorito[]
-  Notificacion     Notificacion[]
-  Reserva          Reserva[]
-  Ciudad           Ciudad?        @relation(fields: [id_ciudad], references: [id])
-  UsuarioRol       UsuarioRol[]
+  id                   Int                    @id @default(autoincrement())
+  nombre               String
+  fecha_nacimiento     DateTime?
+  id_ciudad            Int?
+  contrase_a           String?                @map("contraseña")
+  telefono             String?
+  foto                 String?
+  google_id            String?
+  correo               String                 @unique
+  genero               Genero?
+  Busqueda             Busqueda[]
+  Calificacion         Calificacion[]
+  Carro                Carro[]
+  Favorito             Favorito[]
+  Notificacion         Notificacion[]
+  PasswordRecoveryCode PasswordRecoveryCode[]
+  Reserva              Reserva[]
+  Ciudad               Ciudad?                @relation(fields: [id_ciudad], references: [id])
+  UsuarioRol           UsuarioRol[]
 }
 
 model UsuarioRol {
@@ -266,6 +282,32 @@ model caracteristicasAdicionalesCarro {
   Carro                         Carro                      @relation(fields: [id_carro], references: [id])
 }
 
+model condiciones_generales {
+  id                  Int              @id @default(autoincrement())
+  edad_minima         Int
+  edad_maxima         Int
+  kilometraje_max_dia Float
+  fumar               Boolean
+  mascota             Boolean
+  dev_mismo_conb      Boolean
+  uso_fuera_ciudad    Boolean
+  multa_conductor     Boolean
+  dev_mismo_lugar     Boolean
+  uso_comercial       Boolean
+  condiciones_uso     condiciones_uso?
+}
+
+model condiciones_uso {
+  id                       Int                    @id @default(autoincrement())
+  id_condiciones_generales Int?                   @unique
+  id_devolucion_auto       Int?                   @unique
+  id_entrega_auto          Int?                   @unique
+  Carro                    Carro?
+  condiciones_generales    condiciones_generales? @relation(fields: [id_condiciones_generales], references: [id], onUpdate: NoAction, map: "fk_condiciones_generales")
+  devolucion_auto          devolucion_auto?       @relation(fields: [id_devolucion_auto], references: [id], onUpdate: NoAction, map: "fk_devolucion_auto")
+  entrega_auto             entrega_auto?          @relation(fields: [id_entrega_auto], references: [id], onUpdate: NoAction, map: "fk_entrega_auto_cond")
+}
+
 model contratodeAlquiler {
   id          Int    @id @default(autoincrement())
   id_reserva  Int
@@ -273,6 +315,37 @@ model contratodeAlquiler {
   id_carro    Int
   estado      String @default("pendiente")
   Carro       Carro  @relation(fields: [id_carro], references: [id])
+}
+
+model devolucion_auto {
+  id                Int              @id @default(autoincrement())
+  interior_limpio   Boolean
+  exterior_limpio   Boolean
+  rayones           Boolean
+  herramientas      Boolean
+  cobrar_da_os      Boolean          @map("cobrar_daños")
+  combustible_igual Boolean
+  condiciones_uso   condiciones_uso?
+}
+
+model entrega_auto {
+  id                   Int                    @id @default(autoincrement())
+  estado_combustible   String                 @db.VarChar(255)
+  esterior_limpio      Boolean
+  inter_limpio         Boolean
+  rayones              Boolean
+  llanta_estado        Boolean
+  interior_da_o        Boolean                @map("interior_daño")
+  condiciones_uso      condiciones_uso?
+  herramientas_basicas herramientas_basicas[]
+}
+
+model herramientas_basicas {
+  id              Int          @id @default(autoincrement())
+  nombre          String       @db.VarChar(255)
+  cantidad        Float
+  id_entrega_auto Int
+  entrega_auto    entrega_auto @relation(fields: [id_entrega_auto], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_entrega_auto")
 }
 
 model tipodeDescuento {

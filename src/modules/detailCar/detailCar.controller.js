@@ -3,7 +3,6 @@ const carService = require('./detailCar.service');
 
 const router = Router();
 
-// GET /api/autos/:id
 router.get('/:id', async (req, res) => {
   const carId = parseInt(req.params.id);
   console.log('Id recibido',carId);
