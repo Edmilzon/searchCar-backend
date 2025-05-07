@@ -36,10 +36,21 @@ const carService = {
                 },
             },
         },
+        Calificacion:{
+          select:{
+            calf_carro:true,
+          }
+        },
         Usuario:{
           select:{
             nombre:true,
             telefono: true,
+            foto:true,
+            Carro: {
+              select:{
+                id:true,
+              }
+            },
           }
         },
           CombustibleCarro:{

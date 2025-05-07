@@ -11,8 +11,6 @@ const findAll = async () => {
         puertas:true,
         transmicion:true,
         precio_por_dia: true,
-        disponible_hasta:true,
-        disponible_desde:true,
         CombustibleCarro:{
             select:{
               TipoCombustible:{
