@@ -6,6 +6,7 @@ const detailCarModule = require('../modules/detailCar/detailCar.module');
 const filterCarModule = require('../modules/filterCar/filterCar.module');
 const searchCarModule = require('../modules/searchCar/searchCar.module');
 const insertCondition= require('../modules/insertCondition/insertCondition.module');
+const insertInsurance= require('../modules/InsertInsurance/InsertedInsurance.module');
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use('/detailCar', detailCarModule.controller);
 app.use('/filterCar', filterCarModule.controller);
 app.use('/searchCar', searchCarModule.controller);
 app.use('/insertCondition', insertCondition.controller);
+app.use('/insertedInsurance', insertInsurance.controller);
 
 module.exports = app;
