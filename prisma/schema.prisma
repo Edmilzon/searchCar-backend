@@ -56,11 +56,12 @@ model Carro {
   disponible_desde                DateTime?
   disponible_hasta                DateTime?
   id_condiciones_uso              Int?                              @unique(map: "uq_carro_condiciones_uso")
+  notificaion_confirmacion_id     Int?
   Calificacion                    Calificacion[]
+  condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id], map: "fk_carro_condiciones_uso")
   Direccion                       Direccion                         @relation(fields: [id_direccion], references: [id])
   tipodeDescuento                 tipodeDescuento?                  @relation(fields: [id_tipodeDescuento], references: [id])
   Usuario                         Usuario                           @relation(fields: [id_usuario_rol], references: [id])
-  condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id], onUpdate: NoAction, map: "fk_carro_condiciones_uso")
   CombustibleCarro                CombustibleCarro[]
   Favorito                        Favorito[]
   Imagen                          Imagen[]
@@ -93,7 +94,7 @@ model Descuento {
   id_descuentoTipo Int?
   montoDescontado  Float?
   tipodeDescuento  tipodeDescuento? @relation(fields: [id_descuentoTipo], references: [id])
-  Reserva          Reserva[]
+  Reserva          Reserva[]        @relation("DescuentoToReserva")
 }
 
 model Direccion {
@@ -190,7 +191,7 @@ model Reserva {
   Garantia               Garantia[]
   Carro                  Carro       @relation(fields: [id_carro], references: [id])
   Usuario                Usuario     @relation(fields: [id_usuario], references: [id])
-  Descuento              Descuento[]
+  Descuento              Descuento[] @relation("DescuentoToReserva")
 }
 
 model Rol {
@@ -204,19 +205,19 @@ model Seguro {
   empresa     String
   nombre      String
   tipoSeguro  String
-  valides     String?       @db.VarChar(255)
   SeguroCarro SeguroCarro[]
 }
 
 model SeguroCarro {
-  id          Int      @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   fechaInicio DateTime
   fechaFin    DateTime
   id_carro    Int
   id_seguro   Int
-  empresa     String?  @db.VarChar(255)
-  Carro       Carro    @relation(fields: [id_carro], references: [id])
-  Seguro      Seguro   @relation(fields: [id_seguro], references: [id])
+  enlace      String?      @db.VarChar(255)
+  Carro       Carro        @relation(fields: [id_carro], references: [id])
+  Seguro      Seguro       @relation(fields: [id_seguro], references: [id])
+  tiposeguro  tiposeguro[]
 }
 
 model TipoCombustible {
@@ -303,9 +304,9 @@ model condiciones_uso {
   id_devolucion_auto       Int?                   @unique
   id_entrega_auto          Int?                   @unique
   Carro                    Carro?
-  condiciones_generales    condiciones_generales? @relation(fields: [id_condiciones_generales], references: [id], onUpdate: NoAction, map: "fk_condiciones_generales")
-  devolucion_auto          devolucion_auto?       @relation(fields: [id_devolucion_auto], references: [id], onUpdate: NoAction, map: "fk_devolucion_auto")
-  entrega_auto             entrega_auto?          @relation(fields: [id_entrega_auto], references: [id], onUpdate: NoAction, map: "fk_entrega_auto_cond")
+  condiciones_generales    condiciones_generales? @relation(fields: [id_condiciones_generales], references: [id], map: "fk_condiciones_generales")
+  devolucion_auto          devolucion_auto?       @relation(fields: [id_devolucion_auto], references: [id], map: "fk_devolucion_auto")
+  entrega_auto             entrega_auto?          @relation(fields: [id_entrega_auto], references: [id], map: "fk_entrega_auto_cond")
 }
 
 model contratodeAlquiler {
@@ -329,23 +330,21 @@ model devolucion_auto {
 }
 
 model entrega_auto {
-  id                   Int                    @id @default(autoincrement())
-  estado_combustible   String                 @db.VarChar(255)
-  esterior_limpio      Boolean
-  inter_limpio         Boolean
-  rayones              Boolean
-  llanta_estado        Boolean
-  interior_da_o        Boolean                @map("interior_daño")
-  condiciones_uso      condiciones_uso?
-  herramientas_basicas herramientas_basicas[]
+  id                 Int              @id @default(autoincrement())
+  estado_combustible String           @db.VarChar(255)
+  esterior_limpio    Boolean
+  inter_limpio       Boolean
+  rayones            Boolean
+  llanta_estado      Boolean
+  interior_da_o      Boolean          @map("interior_daño")
+  condiciones_uso    condiciones_uso?
 }
 
 model herramientas_basicas {
-  id              Int          @id @default(autoincrement())
-  nombre          String       @db.VarChar(255)
+  id              Int    @id @default(autoincrement())
+  nombre          String @db.VarChar(255)
   cantidad        Float
   id_entrega_auto Int
-  entrega_auto    entrega_auto @relation(fields: [id_entrega_auto], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_entrega_auto")
 }
 
 model tipodeDescuento {
@@ -356,6 +355,24 @@ model tipodeDescuento {
   fecha_fin    DateTime?
   Carro        Carro[]
   Descuento    Descuento[]
+}
+
+model notificaion_confirmacion {
+  id        Int       @id(map: "notificacion_pkey") @default(autoincrement())
+  mensaje   String
+  fecha     DateTime? @default(now()) @db.Timestamp(6)
+  estado    Boolean?
+  id_renter Int?
+  id_host   Int?
+}
+
+model tiposeguro {
+  id             Int          @id @default(autoincrement())
+  tipoda_o       String?      @map("tipodaño") @db.VarChar(255)
+  descripcion    String?
+  segurocarro_id Int?
+  valides        String?      @db.VarChar(255)
+  SeguroCarro    SeguroCarro? @relation(fields: [segurocarro_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum Genero {

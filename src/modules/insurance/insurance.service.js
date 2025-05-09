@@ -17,10 +17,15 @@ const credenciales = {
               empresa: true,
               nombre: true,
               tipoSeguro: true,
-              valides: true,
-              descripcion: true,
             },
           },
+          tiposeguro:{
+            select:{
+              tipoda_o:true,
+              descripcion:true,
+              valides:true,
+            }
+          }
         },
       });
     } catch (error) {

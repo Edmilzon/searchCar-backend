@@ -1,53 +1,31 @@
 const prisma = require('../../config/prisma');
-const seguroCarroService = {
-  async agregarCredencial(data) {
-    const {
-      seguro,
-      fechaInicio,
-      fechaFin,
-      id_carro,
-      enlace
-    } = data;
-  
-    const nuevoSeguro = await prisma.seguro.create({
-      data: {
-        empresa: seguro.empresa,
-        nombre: seguro.nombre,
-        tipoSeguro: seguro.tipoSeguro,
-        valides: seguro.valides,
-        descripcion: seguro.descripcion,
-      },
-    });
 
-    const nuevoSeguroCarro = await prisma.seguroCarro.create({
-      data: {
-        fechaInicio: new Date(fechaInicio),
-        fechaFin: new Date(fechaFin),
-        id_carro,
-        id_seguro: nuevoSeguro.id,
-        enlace,
-      },
-    });
+const agregarCredencial = async (data) => {
+  const { id_SeguroCarro, tipodaño, descripcion, valides, enlace } = data;
 
-    const seguroCarroConSeguro = await prisma.seguroCarro.findUnique({
-      where: {
-        id: nuevoSeguroCarro.id, 
-      },
-      include: {
-        Seguro: true, 
-      },
-    });
+  const seguroCarro = await prisma.SeguroCarro.findFirst({
+    where: { id: id_SeguroCarro }
+  });
 
-    return seguroCarroConSeguro;
-  },
-
-  async findAll() {
-    return await prisma.seguroCarro.findMany({
-      include: {
-        Seguro: true, 
-      },
-    });
+  if (!seguroCarro) {
+    throw new Error(`No se encontró un SeguroCarro con id_carro = ${id_carro}`);
   }
+
+  const tipoSeguro = await prisma.tiposeguro.create({
+    data: {
+      tipoda_o: tipodaño,
+      descripcion: descripcion,
+      valides: valides,
+      segurocarro_id: seguroCarro.id
+    }
+  });
+
+  await prisma.SeguroCarro.update({
+    where: { id: seguroCarro.id },
+    data: { enlace: enlace }
+  });
+
+  return tipoSeguro;
 };
 
-module.exports = seguroCarroService;
+module.exports = {agregarCredencial};
