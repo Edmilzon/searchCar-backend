@@ -43,6 +43,7 @@ const carService = {
         },
         Usuario:{
           select:{
+            id:true,
             nombre:true,
             telefono: true,
             foto:true,
