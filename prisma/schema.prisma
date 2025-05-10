@@ -58,7 +58,7 @@ model Carro {
   id_condiciones_uso              Int?                              @unique(map: "uq_carro_condiciones_uso")
   notificaion_confirmacion_id     Int?
   Calificacion                    Calificacion[]
-  condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id], map: "fk_carro_condiciones_uso")
+  condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id])
   Direccion                       Direccion                         @relation(fields: [id_direccion], references: [id])
   tipodeDescuento                 tipodeDescuento?                  @relation(fields: [id_tipodeDescuento], references: [id])
   Usuario                         Usuario                           @relation(fields: [id_usuario_rol], references: [id])
@@ -255,15 +255,17 @@ model Usuario {
   Reserva              Reserva[]
   Ciudad               Ciudad?                @relation(fields: [id_ciudad], references: [id])
   UsuarioRol           UsuarioRol[]
+  comentarios          comentarios[]
 }
 
 model UsuarioRol {
-  id         Int        @id @default(autoincrement())
-  id_rol     Int
-  id_usuario Int
-  Favorito   Favorito[]
-  Rol        Rol        @relation(fields: [id_rol], references: [id])
-  Usuario    Usuario    @relation(fields: [id_usuario], references: [id])
+  id          Int           @id @default(autoincrement())
+  id_rol      Int
+  id_usuario  Int
+  Favorito    Favorito[]
+  Rol         Rol           @relation(fields: [id_rol], references: [id])
+  Usuario     Usuario       @relation(fields: [id_usuario], references: [id])
+  comentarios comentarios[]
 }
 
 model aeropuerto {
@@ -281,6 +283,19 @@ model caracteristicasAdicionalesCarro {
   id_carasteristicasAdicionales Int
   CarasteristicasAdicionales    CarasteristicasAdicionales @relation(fields: [id_carasteristicasAdicionales], references: [id])
   Carro                         Carro                      @relation(fields: [id_carro], references: [id])
+}
+
+model comentarios {
+  id                      Int           @id @default(autoincrement())
+  contenido               String?
+  id_comentariorespondido Int?
+  comentado_en            DateTime?     @default(now()) @db.Timestamp(6)
+  id_usuario              Int?
+  id_usuariorol           Int?
+  comentarios             comentarios?  @relation("comentariosTocomentarios", fields: [id_comentariorespondido], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_comentarios       comentarios[] @relation("comentariosTocomentarios")
+  Usuario                 Usuario?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  UsuarioRol              UsuarioRol?   @relation(fields: [id_usuariorol], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model condiciones_generales {
@@ -304,9 +319,9 @@ model condiciones_uso {
   id_devolucion_auto       Int?                   @unique
   id_entrega_auto          Int?                   @unique
   Carro                    Carro?
-  condiciones_generales    condiciones_generales? @relation(fields: [id_condiciones_generales], references: [id], map: "fk_condiciones_generales")
-  devolucion_auto          devolucion_auto?       @relation(fields: [id_devolucion_auto], references: [id], map: "fk_devolucion_auto")
-  entrega_auto             entrega_auto?          @relation(fields: [id_entrega_auto], references: [id], map: "fk_entrega_auto_cond")
+  condiciones_generales    condiciones_generales? @relation(fields: [id_condiciones_generales], references: [id])
+  devolucion_auto          devolucion_auto?       @relation(fields: [id_devolucion_auto], references: [id])
+  entrega_auto             entrega_auto?          @relation(fields: [id_entrega_auto], references: [id])
 }
 
 model contratodeAlquiler {
@@ -347,6 +362,15 @@ model herramientas_basicas {
   id_entrega_auto Int
 }
 
+model notificaion_confirmacion {
+  id        Int       @id(map: "notificacion_pkey") @default(autoincrement())
+  mensaje   String
+  fecha     DateTime? @default(now()) @db.Timestamp(6)
+  estado    Boolean?
+  id_renter Int?
+  id_host   Int?
+}
+
 model tipodeDescuento {
   id           Int         @id @default(autoincrement())
   nombre       String
@@ -355,15 +379,6 @@ model tipodeDescuento {
   fecha_fin    DateTime?
   Carro        Carro[]
   Descuento    Descuento[]
-}
-
-model notificaion_confirmacion {
-  id        Int       @id(map: "notificacion_pkey") @default(autoincrement())
-  mensaje   String
-  fecha     DateTime? @default(now()) @db.Timestamp(6)
-  estado    Boolean?
-  id_renter Int?
-  id_host   Int?
 }
 
 model tiposeguro {

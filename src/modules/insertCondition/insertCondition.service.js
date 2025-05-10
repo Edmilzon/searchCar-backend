@@ -21,10 +21,7 @@ const carroService = {
     // Crea la entrega del auto
     const entregaAuto = await prisma.entrega_auto.create({
       data: {
-        ...condiciones_uso.entrega_auto,
-        herramientas_basicas: {
-          create: condiciones_uso.entrega_auto.herramientas_basicas
-        }
+        ...condiciones_uso.entrega_auto
       }
     });
 

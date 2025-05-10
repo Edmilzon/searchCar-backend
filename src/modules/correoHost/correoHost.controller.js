@@ -5,17 +5,7 @@ const router = Router();
 
 router.post('/', async (req, res) => {
     try {
-        // Recibir los datos del cuerpo de la solicitud
-        const { renterEmail, hostEmail, subject, id_renter, id_host } = req.body;
-
-        // Llamar al servicio para procesar la solicitud
-        const correoHost = await correoService.envCorreoHost({
-            renterEmail,
-            hostEmail,
-            subject,
-            id_renter,
-            id_host,
-        });
+        const correoHost = await correoService.envCorreoHost(req.body);
 
         res.status(201).json(correoHost);
     } catch (error) {

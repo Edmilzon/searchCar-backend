@@ -4,13 +4,44 @@ const { enviarCorreo, crearMensaje } = require('./notifications');
 const prisma = new PrismaClient();
 
 async function envCorreoHost(data) {
-    const { renterEmail, hostEmail, subject, id_renter, id_host } = data;
+    const {
+        fecha,
+        hostNombre,
+        renterNombre,
+        modelo,
+        marca,
+        precio,
+        fechaRecogida,
+        fechaDevolucion,
+        lugarRecogida,
+        lugarDevolucion,
+        renterEmail,
+        hostEmail,
+        id_renter,
+        id_host,
+    } = data;
 
-    const mensaje = crearMensaje(renterEmail, hostEmail, subject);
+    // Crear el mensaje con los datos proporcionados
+    const mensaje = crearMensaje({
+        fecha,
+        hostNombre,
+        renterNombre,
+        modelo,
+        marca,
+        precio,
+        fechaRecogida,
+        fechaDevolucion,
+        lugarRecogida,
+        lugarDevolucion,
+    });
 
     try {
         // Enviar el correo
-        await enviarCorreo(renterEmail, hostEmail, subject);
+        await enviarCorreo({
+            renterEmail,
+            hostEmail,
+            mensaje,
+        });
 
         // Crear la notificación en la base de datos
         const notificacion = await prisma.notificaion_confirmacion.create({
