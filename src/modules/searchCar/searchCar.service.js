@@ -59,7 +59,7 @@ const findAll = async () => {
             },
           },
         },
-        reservas:{
+        Reserva:{
           select: {
             fecha_inicio: true ,
             fecha_fin : true,
