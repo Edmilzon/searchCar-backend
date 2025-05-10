@@ -2,14 +2,14 @@ const nodemailer = require('nodemailer');
 
 function crearMensaje(datos) {
   return `
-    <h1>Solicitud de Reserva</h1>
-    <p><strong>Fecha:</strong> ${datos.fecha}</p>
-    <p><strong>Host:</strong> ${datos.hostNombre}</p>
-    <p>El renter <strong>${datos.renterNombre}</strong> solicita la renta del auto <strong>${datos.modelo} (${datos.marca})</strong>. A continuación, los detalles de la solicitud:</p>
-    <table border="1" style="border-collapse: collapse; width: 100%;">
+    <h1 style="color: black;">Solicitud de Reserva</h1>
+    <p style="color: black;"><strong>Fecha:</strong> ${datos.fecha}</p>
+    <p style="color: black;"><strong>Host:</strong> ${datos.hostNombre}</p>
+    <p style="color: black;">El renter <strong>${datos.renterNombre}</strong> solicita la renta del auto <strong>${datos.modelo} (${datos.marca})</strong>. A continuación, los detalles de la solicitud:</p>
+    <table border="1" style="border-collapse: collapse; width: 100%; color: black;">
       <tr>
         <th>Precio</th>
-        <td>${datos.precio}</td>
+        <td>BOB ${datos.precio} por dia</td>
       </tr>
       <tr>
         <th>Fecha y hora de recogida</th>
@@ -29,11 +29,11 @@ function crearMensaje(datos) {
       </tr>
     </table>
     <br>
-    <div style="text-align: center; margin-top: 20px;">
-      <button style="background-color: black; color: white; padding: 10px; border: none; cursor: pointer;">Aceptar</button>
-      <button style="background-color: #555555; color: white; padding: 10px; border: none; cursor: pointer;">Rechazar</button>
+    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+      <button style="background-color: rgb(168, 168, 168); color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 5px;">Aceptar</button>
+      <button style="background-color:rgb(168, 168, 168); color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 5px;">Rechazar</button>
     </div>
-    `;
+  `;
 }
 
 async function enviarCorreo({ renterEmail, hostEmail, mensaje }) {
