@@ -1,6 +1,7 @@
-const controller = require('./deleteSeguro.controller');
+const deleteSeguroController = require('./deleteSeguro.controller');
+const deleteSeguroService = require('./deleteSeguro.service')
 
 module.exports = {
-  controller,
+  controller :  deleteSeguroController,
+  service : deleteSeguroService
 };
- 

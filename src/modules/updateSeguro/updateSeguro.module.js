@@ -1,6 +1,8 @@
-const controller = require('./updateSeguro.controller');
+const updateSeguroController = require('./updateSeguro.controller');
+const updateSeguroService = require('./updateSeguro.service')
 
 module.exports = {
-  controller,
+  controller: updateSeguroController,
+  service: updateSeguroService
 };
  

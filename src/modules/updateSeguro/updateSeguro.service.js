@@ -3,7 +3,9 @@ const prisma = new PrismaClient();
 
 async function updateSeguro(id, data) {
   try {
-    const updatedSeguroCarro = await prisma.seguroCarro.update({
+    console.log('Datos recibidos para actualizar:', data);
+
+    const updatedSeguroCarro = await prisma.SeguroCarro.update({
       where: { id: parseInt(id) },
       data: {
         fechaInicio: data.fechaInicio ? new Date(data.fechaInicio) : undefined,
@@ -27,12 +29,13 @@ async function updateSeguro(id, data) {
       },
     });
 
+    console.log('Registro actualizado:', updatedSeguroCarro);
     return updatedSeguroCarro;
   } catch (error) {
+    console.error('Error al actualizar el seguro:', error);
     throw error;
   }
 }
-
 module.exports = {
   updateSeguro,
 };

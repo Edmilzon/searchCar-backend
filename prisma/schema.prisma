@@ -16,14 +16,15 @@ model Busqueda {
 }
 
 model Calificacion {
-  id             Int     @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   id_usuario_rol Int
   calf_carro     Int?
   calf_usuario   Int?
   id_carro       Int
   id_usuario     Int
-  Carro          Carro   @relation(fields: [id_carro], references: [id])
-  Usuario        Usuario @relation(fields: [id_usuario], references: [id])
+  Carro          Carro         @relation(fields: [id_carro], references: [id])
+  Usuario        Usuario       @relation(fields: [id_usuario], references: [id])
+  comentarios    comentarios[]
 }
 
 model CarasteristicasAdicionales {
@@ -57,6 +58,7 @@ model Carro {
   disponible_hasta                DateTime?
   id_condiciones_uso              Int?                              @unique(map: "uq_carro_condiciones_uso")
   notificaion_confirmacion_id     Int?
+  calificacionpromedio            Float?                            @default(0)
   Calificacion                    Calificacion[]
   condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id])
   Direccion                       Direccion                         @relation(fields: [id_direccion], references: [id])
@@ -68,6 +70,7 @@ model Carro {
   Reserva                         Reserva[]
   SeguroCarro                     SeguroCarro[]
   caracteristicasAdicionalesCarro caracteristicasAdicionalesCarro[]
+  comentarios                     comentarios[]
   contratodeAlquiler              contratodeAlquiler[]
 }
 
@@ -94,7 +97,7 @@ model Descuento {
   id_descuentoTipo Int?
   montoDescontado  Float?
   tipodeDescuento  tipodeDescuento? @relation(fields: [id_descuentoTipo], references: [id])
-  Reserva          Reserva[]        @relation("DescuentoToReserva")
+  Reserva          Reserva[]
 }
 
 model Direccion {
@@ -191,7 +194,7 @@ model Reserva {
   Garantia               Garantia[]
   Carro                  Carro       @relation(fields: [id_carro], references: [id])
   Usuario                Usuario     @relation(fields: [id_usuario], references: [id])
-  Descuento              Descuento[] @relation("DescuentoToReserva")
+  Descuento              Descuento[]
 }
 
 model Rol {
@@ -292,10 +295,16 @@ model comentarios {
   comentado_en            DateTime?     @default(now()) @db.Timestamp(6)
   id_usuario              Int?
   id_usuariorol           Int?
+  id_carro                Int?
+  id_calificacion         Int?
+  likes                   Int?
+  dont_likes              Int?
   comentarios             comentarios?  @relation("comentariosTocomentarios", fields: [id_comentariorespondido], references: [id], onDelete: NoAction, onUpdate: NoAction)
   other_comentarios       comentarios[] @relation("comentariosTocomentarios")
   Usuario                 Usuario?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
   UsuarioRol              UsuarioRol?   @relation(fields: [id_usuariorol], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Calificacion            Calificacion? @relation(fields: [id_calificacion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "id_calificacion")
+  Carro                   Carro?        @relation(fields: [id_carro], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "id_carro")
 }
 
 model condiciones_generales {
