@@ -1,10 +1,10 @@
 const prisma = require('../../config/prisma');
 
 const agregarCredencial = async (data) => {
-  const { id_SeguroCarro, tipodaño, descripcion, valides, enlace } = data;
+  const { id_carro, tipodaño, descripcion, valides, enlace } = data;
 
   const seguroCarro = await prisma.SeguroCarro.findFirst({
-    where: { id: id_SeguroCarro }
+    where: { id_carro: id_carro }
   });
 
   if (!seguroCarro) {
@@ -28,4 +28,4 @@ const agregarCredencial = async (data) => {
   return tipoSeguro;
 };
 
-module.exports = {agregarCredencial};
+module.exports = { agregarCredencial };
