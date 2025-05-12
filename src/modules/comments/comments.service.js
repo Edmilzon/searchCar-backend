@@ -21,7 +21,6 @@ const carService = {
           dont_likes:true,
           Usuario: {
             select: {
-              foto:true,
               nombre: true
             }
           },
@@ -32,7 +31,6 @@ const carService = {
               comentado_en: true, 
               Usuario: {
                 select: {
-                  foto:true,
                   nombre: true
                 }
               }
