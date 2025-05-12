@@ -56,9 +56,9 @@ model Carro {
   fecha_ingreso                   DateTime?                         @default(now())
   disponible_desde                DateTime?
   disponible_hasta                DateTime?
+  calificacionpromedio            Float?                            @default(0)
   id_condiciones_uso              Int?                              @unique(map: "uq_carro_condiciones_uso")
   notificaion_confirmacion_id     Int?
-  calificacionpromedio            Float?                            @default(0)
   Calificacion                    Calificacion[]
   condiciones_uso                 condiciones_uso?                  @relation(fields: [id_condiciones_uso], references: [id])
   Direccion                       Direccion                         @relation(fields: [id_direccion], references: [id])
