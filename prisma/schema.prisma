@@ -67,6 +67,7 @@ model Carro {
   CombustibleCarro                CombustibleCarro[]
   Favorito                        Favorito[]
   Imagen                          Imagen[]
+  OrdenPago                       OrdenPago[]
   Reserva                         Reserva[]
   SeguroCarro                     SeguroCarro[]
   caracteristicasAdicionalesCarro caracteristicasAdicionalesCarro[]
@@ -92,12 +93,20 @@ model CombustibleCarro {
   TipoCombustible TipoCombustible @relation(fields: [id_combustible], references: [id])
 }
 
+model ComprobanteDePago {
+  id                 Int       @id @default(autoincrement())
+  fecha_emision      DateTime  @default(now())
+  id_orden           Int
+  numero_transaccion String
+  OrdenPago          OrdenPago @relation(fields: [id_orden], references: [id])
+}
+
 model Descuento {
   id               Int              @id @default(autoincrement())
   id_descuentoTipo Int?
   montoDescontado  Float?
   tipodeDescuento  tipodeDescuento? @relation(fields: [id_descuentoTipo], references: [id])
-  Reserva          Reserva[]
+  Reserva          Reserva[]        @relation("DescuentoToReserva")
 }
 
 model Direccion {
@@ -152,6 +161,21 @@ model Notificacion {
   Usuario        Usuario @relation(fields: [id_usuario_rol], references: [id])
 }
 
+model OrdenPago {
+  id                                           Int                 @id @default(autoincrement())
+  codigo                                       String              @unique
+  id_usuario_host                              Int
+  id_usuario_renter                            Int
+  id_carro                                     Int
+  fecha_de_emision                             DateTime            @default(now())
+  monto_a_pagar                                Float
+  estado                                       EstadoOrden         @default(PENDIENTE)
+  ComprobanteDePago                            ComprobanteDePago[]
+  Carro                                        Carro               @relation(fields: [id_carro], references: [id])
+  Usuario_OrdenPago_id_usuario_hostToUsuario   Usuario             @relation("OrdenPago_id_usuario_hostToUsuario", fields: [id_usuario_host], references: [id])
+  Usuario_OrdenPago_id_usuario_renterToUsuario Usuario             @relation("OrdenPago_id_usuario_renterToUsuario", fields: [id_usuario_renter], references: [id])
+}
+
 model Pais {
   id     Int      @id @default(autoincrement())
   nombre String
@@ -194,7 +218,7 @@ model Reserva {
   Garantia               Garantia[]
   Carro                  Carro       @relation(fields: [id_carro], references: [id])
   Usuario                Usuario     @relation(fields: [id_usuario], references: [id])
-  Descuento              Descuento[]
+  Descuento              Descuento[] @relation("DescuentoToReserva")
 }
 
 model Rol {
@@ -239,26 +263,29 @@ model Ubicacion {
 }
 
 model Usuario {
-  id                   Int                    @id @default(autoincrement())
-  nombre               String
-  fecha_nacimiento     DateTime?
-  id_ciudad            Int?
-  contrase_a           String?                @map("contraseña")
-  telefono             String?
-  foto                 String?
-  google_id            String?
-  correo               String                 @unique
-  genero               Genero?
-  Busqueda             Busqueda[]
-  Calificacion         Calificacion[]
-  Carro                Carro[]
-  Favorito             Favorito[]
-  Notificacion         Notificacion[]
-  PasswordRecoveryCode PasswordRecoveryCode[]
-  Reserva              Reserva[]
-  Ciudad               Ciudad?                @relation(fields: [id_ciudad], references: [id])
-  UsuarioRol           UsuarioRol[]
-  comentarios          comentarios[]
+  id                                             Int                    @id @default(autoincrement())
+  nombre                                         String
+  fecha_nacimiento                               DateTime?
+  id_ciudad                                      Int?
+  contrase_a                                     String?                @map("contraseña")
+  telefono                                       String?
+  foto                                           String?
+  google_id                                      String?
+  correo                                         String                 @unique
+  genero                                         Genero?
+  saldo                                          Float                  @default(0)
+  Busqueda                                       Busqueda[]
+  Calificacion                                   Calificacion[]
+  Carro                                          Carro[]
+  Favorito                                       Favorito[]
+  Notificacion                                   Notificacion[]
+  OrdenPago_OrdenPago_id_usuario_hostToUsuario   OrdenPago[]            @relation("OrdenPago_id_usuario_hostToUsuario")
+  OrdenPago_OrdenPago_id_usuario_renterToUsuario OrdenPago[]            @relation("OrdenPago_id_usuario_renterToUsuario")
+  PasswordRecoveryCode                           PasswordRecoveryCode[]
+  Reserva                                        Reserva[]
+  Ciudad                                         Ciudad?                @relation(fields: [id_ciudad], references: [id])
+  UsuarioRol                                     UsuarioRol[]
+  comentarios                                    comentarios[]
 }
 
 model UsuarioRol {
@@ -399,6 +426,13 @@ model tiposeguro {
   SeguroCarro    SeguroCarro? @relation(fields: [segurocarro_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
+enum EstadoOrden {
+  PENDIENTE
+  PROCESANDO
+  COMPLETADO
+  CANCELADO
+}
+
 enum Genero {
   MASCULINO
   FEMENINO
@@ -409,4 +443,5 @@ enum Roles {
   HOST
   RENTER
   DRIVER
+  ADMIN
 }

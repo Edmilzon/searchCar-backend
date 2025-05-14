@@ -21,7 +21,19 @@ const detailHost={
                         select:{
                             modelo:true,
                             marca:true,
+                            Imagen : {
+                                take: 1,
+                                orderBy: {
+                                id: 'asc'
+                                },
+                                select: {
+                                    id: true,
+                                    data: true,
+                                    id_carro: true
+                                }
+                            },
                         }
+                    
                     }
                 }
             })
