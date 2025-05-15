@@ -20,11 +20,6 @@ const agregarCredencial = async (data) => {
     }
   });
 
-  await prisma.SeguroCarro.update({
-    where: { id: seguroCarro.id },
-    data: { enlace: enlace }
-  });
-
   return tipoSeguro;
 };
 
