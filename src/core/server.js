@@ -18,7 +18,10 @@ const deleteSeguro = require('../modules/deleteSeguro/deleteSeguro.module')
 
 const comments=require('../modules/comments/comments.module');
 
-const envSMS = require('../modules/envSMS/envSMS.module')
+const envSMS = require('../modules/envSMS/envSMS.module');
+
+const insEnlace= require('../modules/insertEnlace/insertEnlace.module');
+
 const app = express();
 
 app.use(express.json());
@@ -37,7 +40,7 @@ app.use('/correoHost', correoHost.controller);
 app.use('/useConditon',useConditonModule.controller);
 app.use('/detailHost',detailHostModule.controller);
 app.use('/envSMS', envSMS.controller);
-
+app.use('/insertEnlace',insEnlace.controller);
 app.use('/comments',comments.controller);
 
 //update and delete sure
