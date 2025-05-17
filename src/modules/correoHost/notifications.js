@@ -38,7 +38,7 @@ function crearMensajeHost(datos) {
 
 function crearMensajeRenter(datos) {
   return `
-    <h1 style="color: green;">¡Solicitud enviada con éxito!</h1>
+    <h1 style="color: black;">¡Solicitud enviada con éxito!</h1>
     <p style="color: black;">Hola <strong>${datos.renterNombre}</strong>,</p>
     <p style="color: black;">
       Tu solicitud para el auto <strong>${datos.modelo} (${datos.marca})</strong> fue enviada correctamente al host <strong>${datos.hostNombre}</strong>.
