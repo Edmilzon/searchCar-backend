@@ -11,6 +11,7 @@ const findAll = async () => {
         puertas:true,
         transmicion:true,
         precio_por_dia: true,
+        a_o:true,
         CombustibleCarro:{
             select:{
               TipoCombustible:{
@@ -28,6 +29,8 @@ const findAll = async () => {
         Direccion: {
           select:{
               calle:true,
+              latitud: true,
+              longitud: true,
               Provincia:{
                   select:{
                     Ciudad:{
