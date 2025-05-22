@@ -11,9 +11,23 @@ const credenciales = {
           fechaInicio: true,
           fechaFin: true,
           enlaceSeguro: true,
-          id_carro: true,
+          Carro:{
+            select:{
+              id:true,
+              marca:true,
+              modelo:true,
+              Usuario: {
+                select: {
+                  nombre: true,
+                  telefono: true,
+                  foto:true,
+                },
+              },
+            },
+          },
           Seguro: {
             select: {
+              id:true,
               empresa: true,
               nombre: true,
               tipoSeguro: true,
@@ -21,6 +35,7 @@ const credenciales = {
           },
           tiposeguro:{
             select:{
+              id:true,
               tipoda_o:true,
               descripcion:true,
               cantidadCobertura:true,
