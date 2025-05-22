@@ -10,7 +10,7 @@ const credenciales = {
           id: true,
           fechaInicio: true,
           fechaFin: true,
-          enlace: true,
+          enlaceSeguro: true,
           id_carro: true,
           Seguro: {
             select: {
@@ -23,7 +23,7 @@ const credenciales = {
             select:{
               tipoda_o:true,
               descripcion:true,
-              valides:true,
+              cantidadCobertura:true,
             }
           }
         },

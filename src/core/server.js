@@ -45,7 +45,7 @@ app.use('/comments',comments.controller);
 app.use('/updateSeguro',updateSeguro.controller)
 app.use('/deleteSeguro', deleteSeguro.controller)
 app.use('/insertEnlace',insEnlace.controller);
-app.use('/insurance', insurance.controller);
+app.use('/infoSeguro', insurance.controller);
 app.use('/insertSeguro', insertInsurance.controller);
 
 module.exports = app;
