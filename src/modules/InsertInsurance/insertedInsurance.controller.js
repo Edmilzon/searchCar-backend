@@ -10,6 +10,7 @@ inserted.post('/', async (req, res) => {
     res.status(201).json(insertJson);
   } catch (error) {
     res.status(500).json({ error: 'No insertada', detalle: error.message });
+    //console.error(error);
   }
 });
 

@@ -12,7 +12,6 @@ model Busqueda {
   criterio       String
   fecha_creacion DateTime @default(now())
   id_usuario     Int
-  Usuario        Usuario  @relation(fields: [id_usuario], references: [id])
 }
 
 model Calificacion {
@@ -236,15 +235,15 @@ model Seguro {
 }
 
 model SeguroCarro {
-  id          Int          @id @default(autoincrement())
-  fechaInicio DateTime
-  fechaFin    DateTime
-  id_carro    Int
-  id_seguro   Int
-  enlace      String?      @db.VarChar(255)
-  Carro       Carro        @relation(fields: [id_carro], references: [id])
-  Seguro      Seguro       @relation(fields: [id_seguro], references: [id])
-  tiposeguro  tiposeguro[]
+  id           Int          @id @default(autoincrement())
+  fechaInicio  DateTime
+  fechaFin     DateTime
+  id_carro     Int
+  id_seguro    Int
+  enlaceSeguro String?
+  Carro        Carro        @relation(fields: [id_carro], references: [id])
+  Seguro       Seguro       @relation(fields: [id_seguro], references: [id])
+  tiposeguro   tiposeguro[]
 }
 
 model TipoCombustible {
@@ -274,7 +273,7 @@ model Usuario {
   correo                                         String                 @unique
   genero                                         Genero?
   saldo                                          Float                  @default(0)
-  Busqueda                                       Busqueda[]
+  busquedas                                      String?
   Calificacion                                   Calificacion[]
   Carro                                          Carro[]
   Favorito                                       Favorito[]
@@ -418,12 +417,12 @@ model tipodeDescuento {
 }
 
 model tiposeguro {
-  id             Int          @id @default(autoincrement())
-  tipoda_o       String?      @map("tipodaño") @db.VarChar(255)
-  descripcion    String?
-  segurocarro_id Int?
-  valides        String?      @db.VarChar(255)
-  SeguroCarro    SeguroCarro? @relation(fields: [segurocarro_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                Int          @id @default(autoincrement())
+  tipoda_o          String?      @map("tipodaño") @db.VarChar(255)
+  descripcion       String?
+  segurocarro_id    Int?
+  cantidadCobertura String?      @db.VarChar(255)
+  SeguroCarro       SeguroCarro? @relation(fields: [segurocarro_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum EstadoOrden {

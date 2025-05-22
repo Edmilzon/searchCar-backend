@@ -35,16 +35,17 @@ app.use('/filterCar', filterCarModule.controller);
 app.use('/searchCar', searchCarModule.controller);
 app.use('/insertCondition', insertCondition.controller);
 app.use('/insertedInsurance', insertInsurance.controller);
-app.use('/insurance', insurance.controller);
 app.use('/correoHost', correoHost.controller);
 app.use('/useConditon',useConditonModule.controller);
 app.use('/detailHost',detailHostModule.controller);
 app.use('/envSMS', envSMS.controller);
-app.use('/insertEnlace',insEnlace.controller);
 app.use('/comments',comments.controller);
 
 //update and delete sure
 app.use('/updateSeguro',updateSeguro.controller)
 app.use('/deleteSeguro', deleteSeguro.controller)
+app.use('/insertEnlace',insEnlace.controller);
+app.use('/insurance', insurance.controller);
+app.use('/insertSeguro', insertInsurance.controller);
 
 module.exports = app;
