@@ -18,6 +18,7 @@ const credenciales = {
               modelo:true,
               Usuario: {
                 select: {
+                  id:true,
                   nombre: true,
                   telefono: true,
                   foto:true,
