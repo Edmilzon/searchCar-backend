@@ -241,6 +241,7 @@ model SeguroCarro {
   id_carro     Int
   id_seguro    Int
   enlaceSeguro String?
+  enlace       String?      @db.VarChar(255)
   Carro        Carro        @relation(fields: [id_carro], references: [id])
   Seguro       Seguro       @relation(fields: [id_seguro], references: [id])
   tiposeguro   tiposeguro[]
@@ -422,6 +423,7 @@ model tiposeguro {
   descripcion       String?
   segurocarro_id    Int?
   cantidadCobertura String?      @db.VarChar(255)
+  valides           String?      @db.VarChar(255)
   SeguroCarro       SeguroCarro? @relation(fields: [segurocarro_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
