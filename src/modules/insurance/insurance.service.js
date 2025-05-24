@@ -4,19 +4,13 @@ const credenciales = {
   async findByCarId(id_carro) {
     try {
       console.log('Id recibido desde controller:', id_carro);
-      return await prisma.seguroCarro.findMany({
-        where: { id_carro: id_carro },
-        select: {
-          id: true,
-          fechaInicio: true,
-          fechaFin: true,
-          enlaceSeguro: true,
-          Carro:{
-            select:{
-              id:true,
-              marca:true,
-              modelo:true,
-              Imagen : {
+      return await prisma.carro.findMany({
+        where: { id: id_carro },
+          select:{
+            id:true,
+            marca:true,
+            modelo:true,
+            Imagen : {
               take: 1,
                 orderBy: {
                 id: 'asc'
@@ -26,7 +20,7 @@ const credenciales = {
                   data: true,
                   id_carro: true
                 }
-        },
+              },
               Usuario: {
                 select: {
                   id:true,
@@ -36,15 +30,20 @@ const credenciales = {
                   UsuarioRol:{
                     select:{
                       Rol:{
-                        select:{rol:true,}
+                        select:{
+                          id:true, 
+                          rol:true,}
                       }   
                     }
                   },
                 },
               },
-            },
-          },
-          Seguro: {
+          SeguroCarro:{
+            select:{
+              fechaInicio:true,
+              fechaFin:true,
+              enlaceSeguro:true,
+            Seguro:{
             select: {
               id:true,
               empresa: true,
@@ -59,9 +58,12 @@ const credenciales = {
               descripcion:true,
               cantidadCobertura:true,
             }
-          }
+            }
+          },
+          
         },
-      });
+      }
+      })
     } catch (error) {
       console.error('Error al obtener los seguros por carro:', error);
     }
