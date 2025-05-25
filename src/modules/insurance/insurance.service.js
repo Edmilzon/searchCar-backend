@@ -40,6 +40,7 @@ const credenciales = {
               },
           SeguroCarro:{
             select:{
+              id:true,
               fechaInicio:true,
               fechaFin:true,
               enlaceSeguro:true,
