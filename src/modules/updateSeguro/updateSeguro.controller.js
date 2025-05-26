@@ -18,7 +18,6 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     console.error('Error al actualizar el seguro:', error.message);
     res.status(500).json({ error: 'Error al actualizar el seguro y sus tipos asociados.' });
-    //console.error(error);
   }
 });
 

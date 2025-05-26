@@ -7,7 +7,7 @@ async function updateSeguro(id, data) {
     const updatedTipoSeguro = await prisma.tiposeguro.update({
     where: { id: parseInt(id) },
       data: {
-        segurocarro_id: data.segurocarro_id,
+        segurocarro_id: data.egurocarro_id,
         tipoda_o: data.tipoda_o,
         descripcion: data.descripcion,
         cantidadCobertura: data.cantidadCobertura
@@ -24,4 +24,3 @@ async function updateSeguro(id, data) {
 module.exports = {
   updateSeguro,
 };
- 

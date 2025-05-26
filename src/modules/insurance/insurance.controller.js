@@ -19,5 +19,5 @@ buscarServ.get('/:id', async (req, res) => {
       console.error('Error al buscar el auto:', error);
       res.status(500).json({ error: 'Auto sin credencial', detalle: error.message });
     }
-  }); 
+  });
   module.exports = buscarServ;
