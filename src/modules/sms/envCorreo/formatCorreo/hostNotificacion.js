@@ -32,11 +32,11 @@ function createHostMessage(data) {
     </table>
     <br>
     <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
-      <a href="https://search-car-backend.vercel.app/correo/updateEstadoCorreo/123?estado=true" 
+      <a href="https://search-car-backend.vercel.app/correo/updateEstadoCorreo/${data.notificacionId}?estado=true" 
          style="background-color:rgb(7, 7, 7); color: white; padding: 10px 20px; border: none; text-decoration: none; cursor: pointer; margin: 5px; border-radius: 5px;">
          Aceptar
       </a>
-      <a href="https://search-car-backend.vercel.app/correo/updateEstadoCorreo/123?estado=false" 
+      <a href="https://search-car-backend.vercel.app/correo/updateEstadoCorreo/${data.notificacionId}?estado=false" 
          style="background-color:rgb(0, 0, 0); color: white; padding: 10px 20px; border: none; text-decoration: none; cursor: pointer; margin: 5px; border-radius: 5px;">
          Rechazar
       </a>
