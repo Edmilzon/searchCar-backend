@@ -9,11 +9,12 @@ router.post('/', async (req, res) => {
 
     const notificacion = await correohost('Mensaje de reserva', req.body);
   
-    const mensajeHost = await enviarCorreoHost({...req.body, notificacionId: notificacion.id});
+    const mensajeHost = await enviarCorreoHost({
+      ...req.body, 
+      notificacionId: notificacion.id
+    });
 
     const mensajeRenter = await enviarCorreoRenter(req.body);
-
-    await correohost(mensajeHost, req.body);
 
     res.status(201).json({
       mensaje: mensajeHost,
