@@ -3,7 +3,7 @@ const prisma = require('../../../config/prisma')
 const updateEstado = async (id, estado) => {
     try {
         return await prisma.notificaion_confirmacion.update({
-            where: {id: parseInt(id)},
+            where: {id},
             data: {estado: estado}
         })
     } catch (error) {
