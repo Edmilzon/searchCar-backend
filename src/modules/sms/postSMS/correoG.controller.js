@@ -7,8 +7,19 @@ const router = Router();
 router.post('/', async (req, res) => {
   try {
 
-    const notificacion = await correohost(req.body.mensajeHost, req.body);
-  
+     const mensajeHostGuardar = `Fecha de solicitud: ${req.body.fecha}
+                                Host: ${req.body.hostNombre} (${req.body.hostEmail})
+                                Renter: ${req.body.renterNombre} (${req.body.renterEmail})
+                                Vehículo: ${req.body.modelo} (${req.body.marca})
+                                Precio: $${req.body.precio}
+                                Reserva: del ${req.body.fechaRecogida} al ${req.body.fechaDevolucion}
+                                Lugar de recogida: ${req.body.lugarRecogida}
+                                Lugar de devolución: ${req.body.lugarDevolucion}
+                                ID Renter: ${req.body.id_renter}
+                                ID Host: ${req.body.id_host}`;
+                                
+     const notificacion = await correohost(mensajeHostGuardar, req.body);
+
     const mensajeHost = await enviarCorreoHost({
       ...req.body, 
       notificacionId: notificacion.id
