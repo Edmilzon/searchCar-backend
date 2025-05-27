@@ -12,6 +12,9 @@ correoE.put('/:id', async(req , res) =>{
         const updateNotificacion = await correoEService.updateEstado(id, estado);
         res.json(updateNotificacion)
     } catch (error) {
+        if (error.message === 'La notificacion ya fue respondida') {
+            return res.status(400).json({ error: error.message });
+        }
         console.log('Error al actualizar la notificación');
         res.status(500).json({ error: 'Error al actualizar la notificación' });
     }
@@ -24,6 +27,9 @@ correoECorreo.get('/:id', async (req, res) => {
         const updateNotificacion = await correoEService.updateEstado(id, estado);
         res.send(`<h2>Estado actualizado correctamente</h2>`);
     } catch (error) {
+        if (error.message === 'La notificacion ya fue respondida') {
+            return res.send(`<h2>Esta notificación ya fue respondida anteriormente</h2>`);
+        }
         res.status(500).send('Error al actualizar la notificación');
     }
 });
