@@ -9,13 +9,6 @@ correoE.put('/:id', async(req , res) =>{
     const {estado} = req.body;
 
     try {
-        const notificacion = await prisma.notificaion_confirmacion.findUnique({ where: { id } });
-        if (!notificacion) {
-            return res.status(404).json({ error: 'Notificación no encontrada' });
-        }
-        if (notificacion.estado !== null) {
-            return res.status(400).json({ error: 'El estado ya fue actualizado y no puede ser modificado nuevamente.' });
-        }
         const updateNotificacion = await correoEService.updateEstado(id, estado);
         res.json(updateNotificacion)
     } catch (error) {
@@ -28,13 +21,6 @@ correoECorreo.get('/:id', async (req, res) => {
     const id = req.params.id;
     const estado = req.query.estado === 'true';
     try {
-        const notificacion = await prisma.notificaion_confirmacion.findUnique({ where: { id } });
-        if (!notificacion) {
-            return res.status(404).json({ error: 'Notificación no encontrada' });
-        }
-        if (notificacion.estado !== null) {
-            return res.status(400).json({ error: 'El estado ya fue actualizado y no puede ser modificado nuevamente.' });
-        }
         const updateNotificacion = await correoEService.updateEstado(id, estado);
         res.send(`<h2>Estado actualizado correctamente</h2>`);
     } catch (error) {
