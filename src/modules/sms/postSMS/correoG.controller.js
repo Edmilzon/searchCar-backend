@@ -7,14 +7,14 @@ const router = Router();
 router.post('/', async (req, res) => {
   try {
 
+    const notificacion = await correohost(req.body.mensajeHost, req.body);
+  
     const mensajeHost = await enviarCorreoHost({
       ...req.body, 
       notificacionId: notificacion.id
     });
-    const notificacion = await correohost(mensajeHost, req.body);
 
     const mensajeRenter = await enviarCorreoRenter(req.body);
-
 
     res.status(201).json({
       mensaje: mensajeHost,
