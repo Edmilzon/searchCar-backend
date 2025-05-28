@@ -4,15 +4,22 @@ const carroService = {
   async addConditionsToCar(data) {
     const { id_carro, condiciones_uso } = data;
 
-    // Verifica si el carro existe
+    //verifica si existen condiciones de uso de ese auto
+    // Verifica si el carro existe 
     const carro = await prisma.carro.findUnique({
-      where: { id: id_carro }
+      where: { id: id_carro },
+      select:{
+        id_condiciones_uso: true
+      }
     });
 
     if (!carro) {
       throw new Error(`El carro con ID ${id_carro} no existe.`);
     }
 
+    if(carro.id_condiciones_uso){
+      throw new Error(`El carro con ID ${id_carro} ya tiene condiciones de uso.`);
+    }
     // Crea las condiciones generales
     const condicionesGenerales = await prisma.condiciones_generales.create({
       data: condiciones_uso.condiciones_generales
