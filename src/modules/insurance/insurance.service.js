@@ -1,11 +1,11 @@
 const prisma = require('../../config/prisma');
 
 const credenciales = {
-  async findByCarId(id_carro) {
+  async findByCarId(id) {
     try {
-      console.log('Id recibido desde controller:', id_carro);
+      console.log('Id recibido desde controller:', id);
       return await prisma.seguroCarro.findMany({
-        where: { id_carro: id_carro },
+        where: { id: id},
         select: {
           id: true,
           fechaInicio: true,
