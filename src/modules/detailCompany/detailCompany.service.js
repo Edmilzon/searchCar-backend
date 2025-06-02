@@ -14,8 +14,6 @@ const credenciales = {
             select: {
               id:true,
               empresa: true,
-              nombre: true,
-              tipoSeguro: true,
             },
           },
         },
