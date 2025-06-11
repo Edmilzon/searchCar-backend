@@ -35,6 +35,7 @@ const calificacionesPost = require('../modules/userHost/calificaiones/post/calif
 const userRenter= require('../modules/userRenter/user.module');
 
 const getCobertura=require('../modules/getCobertura/getCobertura.module');
+const gmailHost= require('../modules/gmail/gmail.module')
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 
+app.use('/gmailHost',gmailHost.controller);
 //RUTAS DEFINIDAS
 
 app.use('/detailCar', detailCarModule.controller);
