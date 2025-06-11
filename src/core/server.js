@@ -43,7 +43,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 
-app.use('/gmailHost',gmailHost.controller);
+app.use('/hostUser',gmailHost.controller);
 //RUTAS DEFINIDAS
 
 app.use('/detailCar', detailCarModule.controller);
