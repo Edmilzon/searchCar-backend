@@ -32,6 +32,7 @@ const comentarioHostPost = require('../modules/userHost/Comentarios/post/comenta
 const calificacionesGet = require('../modules/userHost/calificaiones/get/calificaiones.module');
 const calificacionesPost = require('../modules/userHost/calificaiones/post/calificaciones.module');
 
+const userRenter= require('../modules/userRenter/user.module');
 
 const app = express();
 
@@ -73,5 +74,7 @@ app.use('/userhost/comentarioHostPost', comentarioHostPost.controller);
 //calificaciones
 app.use('/userhost/calificacionesGet', calificacionesGet.controller);
 app.use('/userhost/calificacionesPost', calificacionesPost.controller);
+
+app.use('/userRenter', userRenter.controller);
 
 module.exports = app;
