@@ -34,6 +34,8 @@ const calificacionesPost = require('../modules/userHost/calificaiones/post/calif
 
 const userRenter= require('../modules/userRenter/user.module');
 
+const getCobertura=require('../modules/getCobertura/getCobertura.module');
+
 const app = express();
 
 app.use(express.json());
@@ -76,5 +78,7 @@ app.use('/userhost/calificacionesGet', calificacionesGet.controller);
 app.use('/userhost/calificacionesPost', calificacionesPost.controller);
 
 app.use('/userRenter', userRenter.controller);
+
+app.use('/getCobertura', getCobertura.controller);
 
 module.exports = app;
