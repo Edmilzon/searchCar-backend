@@ -21,7 +21,7 @@ const updateSeguro = require('../modules/updateSeguro/updateSeguro.module')
 const deleteSeguro = require('../modules/deleteSeguro/deleteSeguro.module')
 
 const comments=require('../modules/comments/comments.module');
-
+const comments1=require('../modules/comments1/comments.module');
 const insEnlace= require('../modules/insertEnlace/insertEnlace.module');
 
 const detailCarInsurance = require('../modules/detailCarInsurance/detailCarInsurance.module');
@@ -60,6 +60,7 @@ app.use('/correo/updateEstadoCorreo', correoUpdate.correoECorreoController);
 app.use('/useConditon',useConditonModule.controller);
 app.use('/detailHost',detailHostModule.controller);
 app.use('/comments',comments.controller);
+app.use('/comments1',comments1.controller);
 
 //update and delete sure
 app.use('/updateSeguro',updateSeguro.controller)

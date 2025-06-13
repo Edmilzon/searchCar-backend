@@ -176,6 +176,8 @@ model OrdenPago {
   fecha_de_emision                             DateTime            @default(now())
   monto_a_pagar                                Float
   estado                                       EstadoOrden         @default(PENDIENTE)
+  estado_garantia                              EstadoGarantia?     @default(PENDIENTE)
+  monto_garantia                               Float?
   ComprobanteDePago                            ComprobanteDePago[]
   Carro                                        Carro               @relation(fields: [id_carro], references: [id])
   Usuario_OrdenPago_id_usuario_hostToUsuario   Usuario             @relation("OrdenPago_id_usuario_hostToUsuario", fields: [id_usuario_host], references: [id])
@@ -716,4 +718,12 @@ enum EstadoBloqueo {
   ACTIVO
   BLOQUEADO
   SUSPENDIDO
+}
+
+enum EstadoGarantia {
+  PENDIENTE
+  ACTIVA
+  RETENIDA
+  LIBERADA
+  REEMBOLSADA
 }
